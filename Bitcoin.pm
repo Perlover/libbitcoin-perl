@@ -3,11 +3,13 @@ use v5.14;
 use strict;
 use warnings;
 
+our $VERSION = 0.01;
+
 package Bitcoin;
 use EC::DSA qw(secp256k1);
 use Bitcoin::Constants;
 use Bitcoin::Base58;
-use Bitcoin::Database; 
+use Bitcoin::Database;
 use Bitcoin::Block;
 
 sub import {
@@ -110,7 +112,7 @@ Bitcoin
     my $addr = new Bitcoin::Address "1456someSi11yBi1c6inAddressXnkjn56dxx"
         or die "this is not a valid bitcoin address";
     my $addr = "1456someSi11yBi1c6inAddressXnkjn56dxx";
-    
+
     say $k->address;
     say "5JYazF125AwHtaDBDgBFsFc7Q7PKtoePndwJN2z1YfTBN3ThKx8"->address;
     say $k->public_point;
@@ -206,9 +208,9 @@ Many, many thanks to Satoshi for what he accomplished.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011, Lucien Grondin.  All rights reserved.  
+Copyright 2011, Lucien Grondin.  All rights reserved.
 
-This library is free software; you can redistribute it and/or modify it under 
+This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself (L<perlgpl>, L<perlartistic>).
 
 =cut

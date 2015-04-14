@@ -1,0 +1,9 @@
+*.bak
+/Makefile
+/Makefile.old
+*.tar.gz
+/libbitcoin-perl-*/
+/blib/
+pm_to_blib
+/MYMETA.json
+/MYMETA.yml
