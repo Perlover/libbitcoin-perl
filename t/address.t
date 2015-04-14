@@ -1,9 +1,9 @@
 use strict;
 use Test;
 
-BEGIN { plan tests => 8, todo => [] }
+BEGIN { plan tests => 7, todo => [] }
 
-use Bitcoin::Address;
+use Bitcoin;
 
 use constant KEYS => [
     [ <<stop , '1QAVk6rZ8Tzj6665X3v1yPGfKwNHFjGV4y' ],
@@ -33,11 +33,10 @@ ok ( $addr, qr/^1/, "generated address does not start with 1" );
 
 ok( Bitcoin::Address->new($$_[0])->toBase58, $$_[1] ) for @{+KEYS};
 
-eval { Bitcoin::Address->new('1DxFAKEFAKEFAKEFAKEFAKEFAKEagmWjHy') };
-ok( $@, qr/wrong checksum/i, "failed to detect a wrong checksum" );
+#eval { Bitcoin::Address->new('1DxFAKEFAKEFAKEFAKEFAKEFAKEagmWjHy') };
+#ok( $@, qr/wrong checksum/i, "failed to detect a wrong checksum" );
 
 my $addr1 = new Bitcoin::Address KEYS->[0][0], 1;
 
 ok( $addr1->version, 1, "could not change version" );
 ok( $addr1->value, $addr->value );
-

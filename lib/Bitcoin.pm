@@ -30,7 +30,7 @@ sub import {
 		$Base58Data = eval { new Bitcoin::Address $s };
 		push @error, $@;
 		return $Base58Data unless $@;
-		warn "could not convert $s into a bitcoin address or key";
+		warn "could not convert $s into a bitcoin address or key ($@)";
 	    }
 	    return $s;
 	};
@@ -65,7 +65,9 @@ sub new {
 }
 
 package Bitcoin::Address;
+
 our @ISA = qw(Bitcoin::Base58::Data);
+
 sub size() { 160 }
 sub version() { Bitcoin::Constants::THIS_IS_TEST ? 111 : 0 }
 sub data {
@@ -73,13 +75,17 @@ sub data {
     ref $this ? $this->{data} : $this->SUPER::data(@_);
 }
 
+my $i = 0;
+
 sub new {
     my $class = shift;
     my $arg = shift;
     if(not defined $arg) {die "constructor requires an argument"}
     elsif( $arg =~ m/\A$Bitcoin::Base58::b58 {30,}\z/xi ) {
 	my $new = bless { data => $class->data($class->value_from_address($arg)) }, $class;
-	die "invalid address $arg" unless $arg eq $new->to_base58;
+	warn "test ($i): $arg, @{[$new->to_base58]}";
+	$i++;
+	die "invalid address $arg ($arg, @{[$new->to_base58]}, @{[$new->to_hex]})" unless $arg eq $new->to_base58;
 	return $new;
     }
     elsif( not ref $arg ) { die "unknown argument format" }
@@ -214,4 +220,3 @@ This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself (L<perlgpl>, L<perlartistic>).
 
 =cut
-

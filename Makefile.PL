@@ -7,7 +7,7 @@ name 'libbitcoin-perl';
 abstract 'Bitcoin module';
 
 author 'grondilu';
-version_from 'Bitcoin.pm';
+version_from 'lib/Bitcoin.pm';
 auto_set_repository;
 license 'perl';
 perl_version 5.14;

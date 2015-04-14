@@ -26,16 +26,17 @@ our $b58 = qr/[@{[join '', @b58]}]/x;
     use integer;
 
     sub decode { shift =~ m/$b58\Z/p ? $b58{${^MATCH}} + 58*decode(${^PREMATCH}) : 0 }
-    sub encode { my $_ = shift; return $_ < 58 ? $b58[$_] : encode($_/58) . $b58[$_%58] } 
+    sub encode { my $_ = shift; return $_ < 58 ? $b58[$_] : encode($_/58) . $b58[$_%58] }
 }
 
 # Virtual base class for base58-encoded data (with version number and checksum)
 package Bitcoin::Base58::Data;
+
 use Digest::SHA qw(sha256);
 
 # public methods
-sub size();		# virtual constant function  (should be automatically inlined)
-sub version();	        # virtual constant function  (should be automatically inlined)
+sub size() { die "should be defined!" };    # virtual constant function  (should be automatically inlined)
+sub version() { die "should be defined!" }; # virtual constant function  (should be automatically inlined)
 
 # data and value represent the same data.  They define themselves reciprocally
 # in a circular manner.  One of them MUST be defined in child class to break
@@ -147,10 +148,9 @@ L. Grondin <grondilu@yahoo.fr>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright 2011, Lucien Grondin.  All rights reserved.  
+Copyright 2011, Lucien Grondin.  All rights reserved.
 
-This library is free software; you can redistribute it and/or modify it under 
+This library is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself (L<perlgpl>, L<perlartistic>).
 
 =cut
-
