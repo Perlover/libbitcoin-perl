@@ -30,7 +30,7 @@ sub import {
 		$Base58Data = eval { new Bitcoin::Address $s };
 		push @error, $@;
 		return $Base58Data unless $@;
-		warn "could not convert $s into a bitcoin address or key ($@)";
+		warn "could not convert $s into a bitcoin address or key";
 	    }
 	    return $s;
 	};
@@ -75,17 +75,17 @@ sub data {
     ref $this ? $this->{data} : $this->SUPER::data(@_);
 }
 
-my $i = 0;
-
 sub new {
     my $class = shift;
     my $arg = shift;
     if(not defined $arg) {die "constructor requires an argument"}
-    elsif( $arg =~ m/\A$Bitcoin::Base58::b58 {30,}\z/xi ) {
+    elsif(
+	defined $arg
+	    and not ref $arg
+	    and $arg =~ m/\A$Bitcoin::Base58::b58 {30,}\z/xi
+    ) {
 	my $new = bless { data => $class->data($class->value_from_address($arg)) }, $class;
-	warn "test ($i): $arg, @{[$new->to_base58]}";
-	$i++;
-	die "invalid address $arg ($arg, @{[$new->to_base58]}, @{[$new->to_hex]})" unless $arg eq $new->to_base58;
+	die "invalid address $arg" unless $arg eq $new->to_base58;
 	return $new;
     }
     elsif( not ref $arg ) { die "unknown argument format" }
